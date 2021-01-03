@@ -11,6 +11,10 @@ def client
   }
 end
 
+get '/' do
+  'Hello'
+end
+
 post '/callback' do
   body = request.body.read
 
