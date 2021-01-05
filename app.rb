@@ -49,11 +49,12 @@ post '/callback' do
         #query = URI.encode("/hotpepper/gourmet/v1/?key=#{ENV['HOTPEPPER_API_KEY']}&lat=#{lat}&lng=#{lng}&range=1&genre=#{code}&type=lite")
         query = URI.encode("/hotpepper/gourmet/v1/?key=#{ENV['HOTPEPPER_API_KEY']}&large_area=Z011")
         res = req.get(query)
-        res.body["shop"].each_with_index do |shop, i|
-          break if i == 3
+#        res.body["shop"].each_with_index do |shop, i|
+#          break if i == 3
           message = {
             type: 'text',
-            text: shop['urls']['pc']
+            #text: shop['urls']['pc']
+            text: res.body['shop']
           }
           client.reply_message(event['replyToken'], message)
         end
