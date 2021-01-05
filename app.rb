@@ -42,10 +42,12 @@ post '/callback' do
         master_query = URI.encode("/hotpepper/genre/v1/?key=#{ENV['HOTPEPPER_API_KEY']}&keyword=カフェ")
         # TODO
         # ホットペッパーからnilが帰ってきてるっぽい
+        # ログ出力設定
         res = req.get(master_query)
-        code = res['results']['genre']
+        code = res.body['genre'][0]['code'] # エラー
+        #code = res['results']['genre'] # エラー
         #code = res['genre'] # genreキーがおそらくないのでnilになりエラーならない
-        #code = res['genre'][0] # エラーなる
+        #code = res['genre'][0] # エラー
         #code = res['genre'][0]['code']
 
         # 緯度経度情報をホットペッパーAPIに投げ近くのカフェ情報をLINEクライアントに返す
