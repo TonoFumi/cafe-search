@@ -48,15 +48,19 @@ post '/callback' do
         # 緯度経度情報をホットペッパーAPIに投げ近くのカフェ情報をLINEクライアントに返す
         #query = URI.encode("/hotpepper/gourmet/v1/?key=#{ENV['HOTPEPPER_API_KEY']}&lat=#{lat}&lng=#{lng}&range=1&genre=#{code}&type=lite")
         query = URI.encode("/hotpepper/gourmet/v1/?key=#{ENV['HOTPEPPER_API_KEY']}&large_area=Z011")
+        # TODO
+        # 配列を期待しているのに
+        # res.body['shop']がshopになる
         res = req.get(query)
-#        res.body["shop"].each_with_index do |shop, i|
-#          break if i == 3
+        puts res.body
+        res.body["shop"].each_with_index do |shop, i|
+          break if i == 3
           message = {
             type: 'text',
-            #text: shop['urls']['pc']
-            text: res.body['shop']
+            text: shop['urls']['pc']
           }
           client.reply_message(event['replyToken'], message)
+        end
      end
     end
   end
