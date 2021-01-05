@@ -56,6 +56,7 @@ post '/callback' do
           { type: 'text', text: ret[1] },
           { type: 'text', text: ret[2] }
         ]
+        puts messages
         client.reply_message(event['replyToken'], messages)
       end
     end
