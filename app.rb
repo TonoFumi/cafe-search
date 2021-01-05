@@ -39,7 +39,7 @@ post '/callback' do
           #conn.response :logger # ログを出す
           conn.headers['Content-Type'] = 'application/json'
         end
-        res = conn.get("/hotpepper/genre/v1/?key=#{ENV['']}&keyword=カフェ")
+        res = req.get("/hotpepper/genre/v1/?key=#{ENV['HOTPEPPER_API_KEY']}&keyword=カフェ")
         code = res["genre"]["code"]
 
         # 緯度経度情報をホットペッパーAPIに投げ近くのカフェ情報をLINEクライアントに返す
@@ -50,7 +50,7 @@ post '/callback' do
           #conn.response :logger # ログを出す
           conn.headers['Content-Type'] = 'application/json'
         end
-        res = conn.get("/hotpepper/gourmet/v1/?key=#{ENV['']}&lat=#{lat}&lon=#{lon}&range=1&genre=code")
+        res = req.get("/hotpepper/gourmet/v1/?key=#{ENV['HOTPEPPER_API_KEY']}&lat=#{lat}&lon=#{lon}&range=1&genre=code")
         res["shop"]["urls"]["pc"].each do |url|
           message = {
             type: 'text',
