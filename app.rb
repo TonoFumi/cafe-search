@@ -2,6 +2,7 @@ require 'sinatra'
 require 'line/bot'
 require 'dotenv'
 require 'faraday'
+require 'json'
 
 get '/' do
   'Hello'
@@ -43,10 +44,8 @@ post '/callback' do
         # TODO
         # ログ出力設定
         master_res = req.get(master_query)
-        puts master_res.body
-        body = master_res.body
-        puts body["results"]["genre"][0]["code"]
-        code = master_res.body['genre'][0]['code'] # エラー
+        body_master = JSON.parse(master_res.body)
+        code = body_master['results']['genre'][0]['code'] # エラー
 
         # 緯度経度情報をホットペッパーAPIに投げ近くのカフェ情報をLINEクライアントに返す
         query = URI.encode("/hotpepper/gourmet/v1/?key=#{ENV['HOTPEPPER_API_KEY']}&lat=#{lat}&lng=#{lng}&range=1&genre=#{code}&type=lite&format=json")
@@ -55,8 +54,8 @@ post '/callback' do
         # 配列を期待しているのに
         # res.body['shop']がshopになる
         res = req.get(query)
-        puts res.body
-        res.body["shop"].each_with_index do |shop, i|
+        body = JSON.parse(res.body)
+        body['results']["shop"].each_with_index do |shop, i|
           break if i == 3
           message = {
             type: 'text',

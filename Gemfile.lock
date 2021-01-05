@@ -7,6 +7,7 @@ GEM
       multipart-post (>= 1.2, < 3)
       ruby2_keywords
     faraday-net_http (1.0.0)
+    json (2.5.1)
     line-bot-api (1.17.0)
     multipart-post (2.1.1)
     mustermann (1.1.1)
@@ -30,6 +31,7 @@ DEPENDENCIES
   bundler
   dotenv
   faraday
+  json
   line-bot-api
   sinatra
 

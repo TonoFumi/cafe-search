@@ -10,3 +10,4 @@ gem "sinatra"
 gem "line-bot-api"
 gem 'dotenv'
 gem 'faraday'
+gem 'json'
