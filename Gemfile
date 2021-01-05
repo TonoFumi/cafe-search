@@ -9,3 +9,4 @@ gem "sinatra"
 #gem "rails", '~> 6.1.0'
 gem "line-bot-api"
 gem 'dotenv'
+gem 'faraday'
