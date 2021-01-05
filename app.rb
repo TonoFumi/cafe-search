@@ -51,6 +51,7 @@ post '/callback' do
         ret = body['results']["shop"].each_with_object([]) do |shop, urls|
           urls << shop['urls']['pc']
         end
+        puts ret
         messages = [
           { type: 'text', text: ret[0] },
           { type: 'text', text: ret[1] },
