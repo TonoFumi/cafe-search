@@ -37,25 +37,19 @@ post '/callback' do
         req = Faraday::Connection.new(url: uri) do |conn|
           conn.adapter Faraday.default_adapter
           conn.request :url_encoded 
-          #conn.response :logger # ログを出す
           conn.headers['Content-Type'] = 'application/json'
         end
         master_query = URI.encode("/hotpepper/genre/v1/?key=#{ENV['HOTPEPPER_API_KEY']}&keyword=カフェ&format=json")
-        # TODO
-        # ログ出力設定
         master_res = req.get(master_query)
         body_master = JSON.parse(master_res.body)
         code = body_master['results']['genre'][0]['code'] # エラー
 
         # 緯度経度情報をホットペッパーAPIに投げ近くのカフェ情報をLINEクライアントに返す
         query = URI.encode("/hotpepper/gourmet/v1/?key=#{ENV['HOTPEPPER_API_KEY']}&lat=#{lat}&lng=#{lng}&range=1&genre=#{code}&type=lite&format=json")
-        #query = URI.encode("/hotpepper/gourmet/v1/?key=#{ENV['HOTPEPPER_API_KEY']}&large_area=Z011")
-        # TODO
-        # 配列を期待しているのに
-        # res.body['shop']がshopになる
         res = req.get(query)
         body = JSON.parse(res.body)
         body['results']["shop"].each_with_index do |shop, i|
+          puts shop
           break if i == 3
           message = {
             type: 'text',
