@@ -58,22 +58,16 @@ post '/callback' do
           #conn.response :logger # ログを出す
           conn.headers['Content-Type'] = 'application/json'
         end
-        query = URI.encode("/hotpepper/gourmet/v1/?key=#{ENV['HOTPEPPER_API_KEY']}&lat=#{lat}&lng=#{lng}&range=1&genre=#{code}&type=lite")
-        #query = URI.encode("/hotpepper/gourmet/v1/?key=#{ENV['HOTPEPPER_API_KEY']}&lat=#{lat}&lng=#{lng}&range=1")
-        res = req.get(query)
-        message = {
-          type: 'text',
-          text: res.body['shop'][0]['urls']['pc']
-        }
-        client.reply_message(event['replyToken'], message)
-#        res.body["shop"].each_with_index do |shop, i|
-#          break if i == 3
-#          message = {
-#            type: 'text',
-#            text: shop['urls']['pc']
-#          }
-#          client.reply_message(event['replyToken'], message)
-#        end
+        #query = URI.encode("/hotpepper/gourmet/v1/?key=#{ENV['HOTPEPPER_API_KEY']}&lat=#{lat}&lng=#{lng}&range=1&genre=#{code}&type=lite")
+        query = URI.encode("/hotpepper/gourmet/v1/?key=#{ENV['HOTPEPPER_API_KEY']}&large_area=Z011")
+        res.body["shop"].each_with_index do |shop, i|
+          break if i == 3
+          message = {
+            type: 'text',
+            text: shop['urls']['pc']
+          }
+          client.reply_message(event['replyToken'], message)
+        end
      end
     end
   end
