@@ -39,12 +39,12 @@ post '/callback' do
           #conn.response :logger # ログを出す
           conn.headers['Content-Type'] = 'application/json'
         end
-        master_query = URI.encode("/hotpepper/genre/v1/?key=#{ENV['HOTPEPPER_API_KEY']}&keyword=カフェ")
+        master_query = URI.encode("/hotpepper/genre/v1/?key=#{ENV['HOTPEPPER_API_KEY']}&keyword=カフェ&format=json")
         # TODO
         # ログ出力設定
         master_res = req.get(master_query)
         puts master_res.body
-        code = master_res.body['genre'][0]['code'] # エラー
+        code = master_res.body['results']['genre'][0]['code'] # エラー
 
         # 緯度経度情報をホットペッパーAPIに投げ近くのカフェ情報をLINEクライアントに返す
         query = URI.encode("/hotpepper/gourmet/v1/?key=#{ENV['HOTPEPPER_API_KEY']}&lat=#{lat}&lng=#{lng}&range=1&genre=#{code}&type=lite&format=json")
