@@ -29,7 +29,7 @@ post '/callback' do
       when Line::Bot::Event::MessageType::Location
         # 緯度経度を取得する
         lat = event.message['latitude']
-        lon = event.message['longitude']
+        lng = event.message['longitude']
 
         # ジャンルマスタAPIに投げてジャンルコードを取得する
         master_uri = "https://webservice.recruit.co.jp"
@@ -58,8 +58,8 @@ post '/callback' do
           #conn.response :logger # ログを出す
           conn.headers['Content-Type'] = 'application/json'
         end
-        #query = URI.encode("/hotpepper/gourmet/v1/?key=#{ENV['HOTPEPPER_API_KEY']}&lat=#{lat}&lon=#{lon}&range=1&genre=#{code}&type=lite")
-        query = URI.encode("/hotpepper/gourmet/v1/?key=#{ENV['HOTPEPPER_API_KEY']}&lat=#{lat}&lon=#{lon}&range=1")
+        #query = URI.encode("/hotpepper/gourmet/v1/?key=#{ENV['HOTPEPPER_API_KEY']}&lat=#{lat}&lng=#{lng}&range=1&genre=#{code}&type=lite")
+        query = URI.encode("/hotpepper/gourmet/v1/?key=#{ENV['HOTPEPPER_API_KEY']}&lat=#{lat}&lng=#{lng}&range=1")
         res = req.get(query)
         res.body["shop"].each_with_index do |shop, i|
           break if i == 3
