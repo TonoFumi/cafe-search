@@ -48,8 +48,8 @@ post '/callback' do
         query = URI.encode("/hotpepper/gourmet/v1/?key=#{ENV['HOTPEPPER_API_KEY']}&lat=#{lat}&lng=#{lng}&range=1&genre=#{code}&type=lite&format=json")
         res = req.get(query)
         body = JSON.parse(res.body)
-        body['results']["shop"].each_with_object([]) do |shop, ret|
-          ret << shop['urls']['pc']
+        ret = body['results']["shop"].each_with_object([]) do |shop, urls|
+          urls << shop['urls']['pc']
         end
         messages = [
           { type: 'text', text: ret[0] },
@@ -57,7 +57,7 @@ post '/callback' do
           { type: 'text', text: ret[2] }
         ]
         client.reply_message(event['replyToken'], messages)
-    end
+      end
     end
   end
 
