@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'line/bot'
 require 'dotenv'
+require 'faraday'
 
 get '/' do
   'Hello'
@@ -20,6 +21,12 @@ post '/callback' do
     when Line::Bot::Event::Message
       case event.type
       when Line::Bot::Event::MessageType::Text
+        message = {
+          type: 'text',
+          text: event.message['text']
+        }
+        client.reply_message(event['replyToken'], message)
+      when Line::Bot::Event::MessageType::Location
         # 緯度経度を取得する
         lat = event.message['latitude']
         lon = event.message['longitude']
