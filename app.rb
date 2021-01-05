@@ -60,7 +60,7 @@ post '/callback' do
         end
         query = URI.encode("/hotpepper/gourmet/v1/?key=#{ENV['HOTPEPPER_API_KEY']}&lat=#{lat}&lon=#{lon}&range=1&genre=#{code}&type=lite")
         res = req.get(query)
-        res["shop"].each_with_index do |shop, i|
+        res.body["shop"].each_with_index do |shop, i|
           break if i == 3
           message = {
             type: 'text',
