@@ -49,7 +49,7 @@ post '/callback' do
         res = req.get(query)
         body = JSON.parse(res.body)
         body['results']["shop"].each_with_index do |shop, i|
-          puts shop
+          puts shop['urls']['pc']
           break if i == 3
           message = {
             type: 'text',
