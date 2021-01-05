@@ -43,8 +43,7 @@ post '/callback' do
         # TODO
         # ログ出力設定
         master_res = req.get(master_query)
-        #puts master_res.body
-        puts master_res.body['genre'][0]['code'] # エラー
+        puts master_res.body
         code = master_res.body['genre'][0]['code'] # エラー
 
         # 緯度経度情報をホットペッパーAPIに投げ近くのカフェ情報をLINEクライアントに返す
@@ -54,9 +53,7 @@ post '/callback' do
         # 配列を期待しているのに
         # res.body['shop']がshopになる
         res = req.get(query)
-        #puts res.body
-        puts res.body['shop']
-        puts res.body['shop']
+        puts res.body
         res.body["shop"].each_with_index do |shop, i|
           break if i == 3
           message = {
