@@ -44,6 +44,8 @@ post '/callback' do
         # ログ出力設定
         master_res = req.get(master_query)
         puts master_res.body
+        body = master_res.body
+        puts body["results"]["genre"][0]["code"]
         code = master_res.body['genre'][0]['code'] # エラー
 
         # 緯度経度情報をホットペッパーAPIに投げ近くのカフェ情報をLINEクライアントに返す
