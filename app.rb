@@ -32,25 +32,6 @@ post '/callback' do
         lng = event.message['longitude']
 
         # ジャンルマスタAPIに投げてジャンルコードを取得する
-        master_uri = "https://webservice.recruit.co.jp"
-        req = Faraday::Connection.new(url: master_uri) do |conn|
-          conn.adapter Faraday.default_adapter
-          conn.request :url_encoded 
-          #conn.response :logger # ログを出す
-          conn.headers['Content-Type'] = 'application/json'
-        end
-        master_query = URI.encode("/hotpepper/genre/v1/?key=#{ENV['HOTPEPPER_API_KEY']}&keyword=カフェ")
-        # TODO
-        # ホットペッパーからnilが帰ってきてるっぽい
-        # ログ出力設定
-        res = req.get(master_query)
-        code = res.body['genre'][0]['code'] # エラー
-        #code = res['results']['genre'] # エラー
-        #code = res['genre'] # genreキーがおそらくないのでnilになりエラーならない
-        #code = res['genre'][0] # エラー
-        #code = res['genre'][0]['code']
-
-        # 緯度経度情報をホットペッパーAPIに投げ近くのカフェ情報をLINEクライアントに返す
         uri = "https://webservice.recruit.co.jp"
         req = Faraday::Connection.new(url: uri) do |conn|
           conn.adapter Faraday.default_adapter
@@ -58,8 +39,16 @@ post '/callback' do
           #conn.response :logger # ログを出す
           conn.headers['Content-Type'] = 'application/json'
         end
+        master_query = URI.encode("/hotpepper/genre/v1/?key=#{ENV['HOTPEPPER_API_KEY']}&keyword=カフェ")
+        # TODO
+        # ログ出力設定
+        master_res = req.get(master_query)
+        code = master_res.body['genre'][0]['code'] # エラー
+
+        # 緯度経度情報をホットペッパーAPIに投げ近くのカフェ情報をLINEクライアントに返す
         #query = URI.encode("/hotpepper/gourmet/v1/?key=#{ENV['HOTPEPPER_API_KEY']}&lat=#{lat}&lng=#{lng}&range=1&genre=#{code}&type=lite")
         query = URI.encode("/hotpepper/gourmet/v1/?key=#{ENV['HOTPEPPER_API_KEY']}&large_area=Z011")
+        res = req.get(query)
         res.body["shop"].each_with_index do |shop, i|
           break if i == 3
           message = {
