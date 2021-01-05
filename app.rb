@@ -53,7 +53,7 @@ post '/callback' do
 #          break if i == 3
           message = {
             type: 'text',
-            #text: shop['urls']['pc']
+            #text: shop['urls']['pc'] # stringになる
             text: res.body['shop']
           }
           client.reply_message(event['replyToken'], message)
