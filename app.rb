@@ -43,8 +43,9 @@ post '/callback' do
         # TODO
         # ホットペッパーからnilが帰ってきてるっぽい
         res = req.get(master_query)
-        #code = res['genre']
-        code = res['genre'][0]
+        code = res['results']['genre']
+        #code = res['genre'] # genreキーがおそらくないのでnilになりエラーならない
+        #code = res['genre'][0] # エラーなる
         #code = res['genre'][0]['code']
 
         # 緯度経度情報をホットペッパーAPIに投げ近くのカフェ情報をLINEクライアントに返す
