@@ -41,7 +41,7 @@ post '/callback' do
         end
         master_query = URI.encode("/hotpepper/genre/v1/?key=#{ENV['HOTPEPPER_API_KEY']}&keyword=カフェ")
         res = req.get(master_query)
-        genres = res['genre']
+        code = res['genre'][0]['code']
 
         # 緯度経度情報をホットペッパーAPIに投げ近くのカフェ情報をLINEクライアントに返す
         uri = "https://webservice.recruit.co.jp"
@@ -51,12 +51,13 @@ post '/callback' do
           #conn.response :logger # ログを出す
           conn.headers['Content-Type'] = 'application/json'
         end
-        query = URI.encode("/hotpepper/gourmet/v1/?key=#{ENV['HOTPEPPER_API_KEY']}&lat=#{lat}&lon=#{lon}&range=1&genre=code")
+        query = URI.encode("/hotpepper/gourmet/v1/?key=#{ENV['HOTPEPPER_API_KEY']}&lat=#{lat}&lon=#{lon}&range=1&genre=#{code}&type=lite")
         res = req.get(query)
-        res["shop"]["urls"]["pc"].each do |url|
+        res["shop"].each_with_index do |shop, i|
+          break if i == 3
           message = {
             type: 'text',
-            text: url
+            text: shop['urls']['pc']
           }
           client.reply_message(event['replyToken'], message)
         end
