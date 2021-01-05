@@ -40,14 +40,12 @@ post '/callback' do
           conn.headers['Content-Type'] = 'application/json'
         end
         master_query = URI.encode("/hotpepper/genre/v1/?key=#{ENV['HOTPEPPER_API_KEY']}&keyword=カフェ")
+        # TODO
+        # ホットペッパーからnilが帰ってきてるっぽい
         res = req.get(master_query)
+        #code = res['genre']
+        code = res['genre'][0]
         #code = res['genre'][0]['code']
-        code = res['genre']
-        message = {
-          type: 'text',
-          text: code
-        }
-        client.reply_message(event['replyToken'], message)
 
         # 緯度経度情報をホットペッパーAPIに投げ近くのカフェ情報をLINEクライアントに返す
         uri = "https://webservice.recruit.co.jp"
