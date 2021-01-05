@@ -41,8 +41,7 @@ post '/callback' do
         end
         master_query = URI.encode("/hotpepper/genre/v1/?key=#{ENV['HOTPEPPER_API_KEY']}&keyword=カフェ")
         res = req.get(master_query)
-        results = res['results']
-        codes = results["genre"]
+        genres = res['genre']
 
         # 緯度経度情報をホットペッパーAPIに投げ近くのカフェ情報をLINEクライアントに返す
         uri = "https://webservice.recruit.co.jp"
